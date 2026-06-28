@@ -7,8 +7,17 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: "./", 
-    test: {
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://rickandmortyapi.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/api'),
+      },
+    },
+  },
+  base: "./",
+  test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/setupTests.ts',
