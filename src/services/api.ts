@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { Character } from '../types/character';
 
 export const api = axios.create({
-    baseURL: 'https://rickandmortyapi.com/api'
+  baseURL: 'https://rickandmortyapi.com/api' 
 });
 
 interface ApiResponse{
