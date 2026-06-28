@@ -5,6 +5,7 @@
     "lib": ["ES2023"],
     "types": ["node"],
     "skipLibCheck": true,
+    "types": ["vitest/globals"],
 
     /* Bundler mode */
     "module": "nodenext",

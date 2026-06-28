@@ -19,9 +19,9 @@ export const getCharacters = async (page = 1, name = '', status = '', species = 
     const response = await api.get<ApiResponse>('/character', {
         params:{
             page,
-            name,
-            status,
-            species,
+            ...(name && { name }),
+            ...(status && { status }),
+            ...(species && { species }),
         },
     });
     return response.data;
