@@ -62,7 +62,7 @@ export default function App() {
         <div className="flex h-[60vh] items-center justify-center text-xl font-bold">
           Carregando personagens...
         </div>
-      )}
+      )};
 
       {isError && !isLoading && (
         <div className="flex h-[60vh] flex-col items-center justify-center text-center p-4">
@@ -76,7 +76,7 @@ export default function App() {
             Tentar Novamente
           </button>
         </div>
-      )}
+      )};
 
       {!isLoading && !isError && (
         <>
@@ -153,7 +153,7 @@ export default function App() {
                 />
               ))}
             </main>
-          )}
+          )};
 
           <div ref={ref} className="w-full flex flex-col items-center justify-center h-20 mt-8 mb-12">
             {isFetchingNextPage && (
@@ -167,7 +167,7 @@ export default function App() {
             )}
           </div>
         </>
-      )}
+      )};
 
       <Modal
         character={selectedCharacter}
