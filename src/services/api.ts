@@ -1,7 +1,6 @@
 import axios from 'axios';
 import type { Character } from '../types/character';
 
-// Usamos '/api' para que o Netlify redirecione para a API real
 export const api = axios.create({
   baseURL: '/api' 
 });
