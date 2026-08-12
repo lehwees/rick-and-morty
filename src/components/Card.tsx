@@ -1,17 +1,16 @@
 import type { Character } from '../types/character';
-import { useFavorites } from '../hooks/useFavorites';
 
 interface CardProps {
     character: Character;
     onClick: () => void;
+    isFavorite: boolean;
+    onToggleFavorite: (id: number) => void;
 }
 
-export function Card({ character, onClick }: CardProps) {
+export function Card({ character, onClick, isFavorite, onToggleFavorite }: CardProps) {
     const isAlive = character.status === 'Alive';
     const isDead = character.status === 'Dead';
     const statusColor = isAlive ? 'bg-green-500' : isDead ? 'bg-red-500' : 'bg-gray-500';
-    const { toggleFavorite, isFavorite } = useFavorites();
-    const favorited = isFavorite(character.id);
 
     return (
         <div
@@ -31,7 +30,6 @@ export function Card({ character, onClick }: CardProps) {
 
             <div className="w-[65%] p-5 pl-7 flex flex-col justify-between h-full min-w-0">
                 <div className="flex flex-col gap-1.5">
-
                     <div className="flex items-start justify-between gap-2 w-full relative">
                         <h3 className="font-extrabold text-gray-900 dark:text-white text-[24px] leading-tight hover:text-pink-400 dark:hover:text-pink-400 transition-colors truncate flex-1">
                             {character.name}
@@ -42,12 +40,12 @@ export function Card({ character, onClick }: CardProps) {
                             onClick={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
-                                toggleFavorite(character.id);
+                                onToggleFavorite(character.id);
                             }}
                             className="p-1 text-gray-400 hover:text-pink-400 transition-colors duration-200 flex-shrink-0 relative z-30 cursor-pointer"
-                            title={favorited ? "Remover dos favoritos" : "Favoritar"}
+                            title={isFavorite ? "Remover dos favoritos" : "Favoritar"}
                         >
-                            {favorited ? (
+                            {isFavorite ? (
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-pink-400 scale-110 transition-transform pointer-events-none">
                                     <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clipRule="evenodd" />
                                 </svg>
