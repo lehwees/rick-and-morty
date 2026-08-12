@@ -4,7 +4,6 @@ import { FavoritesProvider } from '../contexts/FavoritesContext';
 import type { Character } from '../types/character';
 import { describe, it, expect, vi } from 'vitest';
 
-
 const mockCharacter: Character = {
     id: 2,
     name: 'Morty Smith',
@@ -24,7 +23,7 @@ describe('Componente Modal', () => {
     it('deve renderizar as informações detalhadas do personagem', () => {
         render(
             <FavoritesProvider>
-                <Modal character={mockCharacter} onClose={vi.fn()} />
+                <Modal character={mockCharacter} onClose={vi.fn()} isFavorite={false} onToggleFavorite={vi.fn()} />
             </FavoritesProvider>
         );
 
@@ -38,7 +37,7 @@ describe('Componente Modal', () => {
 
         const { container } = render(
             <FavoritesProvider>
-                <Modal character={mockCharacter} onClose={mockOnClose} />
+                <Modal character={mockCharacter} onClose={mockOnClose} isFavorite={false} onToggleFavorite={vi.fn()} />
             </FavoritesProvider>
         );
 
@@ -56,34 +55,25 @@ describe('Componente Modal', () => {
         const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
 
         expect(() => {
-            render(<Modal character={mockCharacter} onClose={vi.fn()} />);
+            render(<Modal character={mockCharacter} onClose={vi.fn()} isFavorite={false} onToggleFavorite={vi.fn()} />);
         }).toThrow('useFavorites deve ser usado dentro de um FavoritesProvider');
 
         consoleSpy.mockRestore(); 
     });
 
-    it('deve lançar um erro se o Modal for renderizado sem o FavoritesProvider', () => {
-        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
-
-        expect(() => {
-            render(<Modal character={mockCharacter} onClose={vi.fn()} />);
-        }).toThrow('useFavorites deve ser usado dentro de um FavoritesProvider');
-
-        consoleSpy.mockRestore();
-    });
-
-    it('não deve quebrar se o personagem for passado como nulo (se seu código permitir)', () => {
+    it('não deve quebrar se o personagem for passado com propriedades parciais', () => {
         render(
             <FavoritesProvider>
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 <Modal
                     character={{
                         name: 'Teste',
                         episode: [], 
-                        location: { name: 'Desconhecido' },
-                        origin: { name: 'Desconhecido' }
-                    } as any}
+                        location: { name: 'Desconhecido', url: '' },
+                        origin: { name: 'Desconhecido', url: '' }
+                    } as Partial<Character> as Character}
                     onClose={vi.fn()}
+                    isFavorite={false}
+                    onToggleFavorite={vi.fn()}
                 />
             </FavoritesProvider>
         );
@@ -96,10 +86,12 @@ describe('Componente Modal', () => {
                     character={{
                         name: 'Teste',
                         episode: [], 
-                        location: { name: 'Desconhecido' },
-                        origin: { name: 'Desconhecido' }
-                    } as any}
+                        location: { name: 'Desconhecido', url: '' },
+                        origin: { name: 'Desconhecido', url: '' }
+                    } as Partial<Character> as Character}
                     onClose={vi.fn()}
+                    isFavorite={false}
+                    onToggleFavorite={vi.fn()}
                 />
             </FavoritesProvider>
         );
@@ -108,11 +100,11 @@ describe('Componente Modal', () => {
     });
 
     it('deve exibir "Nome não disponível" quando o nome estiver vazio', () => {
-        const mockIncompleto = { ...mockCharacter, name: '' } as any;
+        const mockIncompleto = { ...mockCharacter, name: '' };
 
         render(
             <FavoritesProvider>
-                <Modal character={mockIncompleto} onClose={vi.fn()} />
+                <Modal character={mockIncompleto} onClose={vi.fn()} isFavorite={false} onToggleFavorite={vi.fn()} />
             </FavoritesProvider>
         );
 
@@ -122,7 +114,7 @@ describe('Componente Modal', () => {
     it('deve alternar o estado de favorito ao clicar no botão', () => {
         render(
             <FavoritesProvider>
-                <Modal character={mockCharacter} onClose={vi.fn()} />
+                <Modal character={mockCharacter} onClose={vi.fn()} isFavorite={false} onToggleFavorite={vi.fn()} />
             </FavoritesProvider>
         );
 
@@ -135,9 +127,9 @@ describe('Componente Modal', () => {
     it('deve renderizar o ícone de favoritado quando o personagem estiver nos favoritos', () => {
         render(
             <FavoritesProvider>
-                <Modal character={mockCharacter} onClose={vi.fn()} />
+                <Modal character={mockCharacter} onClose={vi.fn()} isFavorite={false} onToggleFavorite={vi.fn()} />
             </FavoritesProvider>
         );
         expect(screen.getByTestId('icon-favorited')).toBeInTheDocument();
     });
-})
+});

@@ -23,7 +23,12 @@ describe('Componente Card', () => {
   it('deve alternar o estado de favorito ao clicar no botão', () => {
     const { container } = render(
       <FavoritesProvider>
-        <Card character={mockCharacter} onClick={vi.fn()} />
+        <Card 
+          character={mockCharacter} 
+          onClick={vi.fn()} 
+          isFavorite={false} 
+          onToggleFavorite={vi.fn()} 
+        />
       </FavoritesProvider>
     );
     const favButton = container.querySelector('button');
